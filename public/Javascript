@@ -1,0 +1,58 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const vehicles = [
+        { type: 'Maruti Suzuki Alto', topSpeed: 140, fuelEfficiency: 22.05, fuelTank: 35, maxRange: 771.75 },
+        { type: 'Hyundai i20', topSpeed: 180, fuelEfficiency: 20.35, fuelTank: 37, maxRange: 753.05 },
+        { type: 'Tata Nexon', topSpeed: 180, fuelEfficiency: 17.57, fuelTank: 44, maxRange: 772.68 },
+        { type: 'Honda City', topSpeed: 180, fuelEfficiency: 17.8, fuelTank: 40, maxRange: 712.00 },
+        { type: 'Mahindra Thar', topSpeed: 155, fuelEfficiency: 15.2, fuelTank: 57, maxRange: 866.40 },
+        { type: 'Toyota Innova Crysta', topSpeed: 179, fuelEfficiency: 11.25, fuelTank: 55, maxRange: 618.75 },
+        { type: 'Kia Seltos', topSpeed: 170, fuelEfficiency: 16.8, fuelTank: 50, maxRange: 840.00 },
+        { type: 'Renault Kwid', topSpeed: 150, fuelEfficiency: 22.3, fuelTank: 28, maxRange: 624.40 },
+        { type: 'Ford EcoSport', topSpeed: 182, fuelEfficiency: 15.9, fuelTank: 52, maxRange: 826.80 },
+        { type: 'Tata Tiago', topSpeed: 150, fuelEfficiency: 23.84, fuelTank: 35, maxRange: 834.40 }
+    ];
+
+    const vehicleSelectionContainer = document.querySelector('.vehicle-selection');
+
+    vehicles.forEach((vehicle, index) => {
+        const label = document.createElement('label');
+        label.innerHTML = `
+            <input type="radio" name="vehicle" value="${index}" ${index === 0 ? 'checked' : ''}>
+            ${vehicle.type}
+        `;
+        vehicleSelectionContainer.appendChild(label);
+    });
+
+    document.getElementById('calculate-btn').addEventListener('click', () => {
+        const distance = parseFloat(document.getElementById('distance').value);
+        const selectedVehicleIndex = document.querySelector('input[name="vehicle"]:checked').value;
+        const selectedVehicle = vehicles[selectedVehicleIndex];
+
+        if (isNaN(distance) || distance <= 0) {
+            alert('Please enter a valid distance.');
+            return;
+        }
+
+        const time = distance / selectedVehicle.topSpeed;
+        const fuelConsumed = distance / selectedVehicle.fuelEfficiency;
+        const outOfRange = distance > selectedVehicle.maxRange;
+
+        document.getElementById('conversion-result').innerHTML = `
+            <p>Selected Vehicle: ${selectedVehicle.type}</p>
+            <p>Time to Travel: ${time.toFixed(2)} hours</p>
+            <p>Fuel Consumption: ${fuelConsumed.toFixed(2)} liters ${outOfRange ? '<span class="out-of-range"> - Out of Range!</span>' : ''}</p>
+        `;
+
+        let comparisonResultHtml = '<h3>Comparison with Other Vehicles</h3>';
+        vehicles.forEach(vehicle => {
+            const compTime = distance / vehicle.topSpeed;
+            const compFuelConsumed = distance / vehicle.fuelEfficiency;
+            const compOutOfRange = distance > vehicle.maxRange;
+
+            comparisonResultHtml += `
+                <p><strong>${vehicle.type}</strong>: ${compTime.toFixed(2)} hours, ${compFuelConsumed.toFixed(2)} liters ${compOutOfRange ? '<span class="out-of-range"> - Out of Range!</span>' : ''}</p>
+            `;
+        });
+        document.getElementById('comparison-result').innerHTML = comparisonResultHtml;
+    });
+});

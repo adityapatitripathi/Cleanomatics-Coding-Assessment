@@ -1,0 +1,36 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.input-section, .result-section {
+    margin: 20px 0;
+}
+
+.vehicle-selection {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.result-section div {
+    margin-top: 10px;
+}
+
+.out-of-range {
+    color: red;
+    font-weight: bold;
+}
